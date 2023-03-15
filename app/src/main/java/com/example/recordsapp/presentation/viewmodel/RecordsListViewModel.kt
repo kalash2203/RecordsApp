@@ -25,7 +25,6 @@ class RecordsListViewModel @Inject constructor(
     val notesList = _notesList.asStateFlow()
 
     var imageUri: Uri? = null
-    var isLoggedIn = MutableLiveData(true)
 
 
     init {

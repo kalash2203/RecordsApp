@@ -5,11 +5,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.recordsapp.MainActivity
+import com.example.recordsapp.presentation.MainActivity
 import com.example.recordsapp.databinding.FragmentRecordDetailsBinding
 import com.example.recordsapp.presentation.viewmodel.DetailsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class RecordDetailsFragment : BaseFragment<FragmentRecordDetailsBinding>() {
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentRecordDetailsBinding
