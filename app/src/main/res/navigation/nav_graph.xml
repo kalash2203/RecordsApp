@@ -19,5 +19,8 @@
         <argument
             android:name="note"
             app:argType="com.example.recordsapp.domain.model.Note" />
+        <action
+            android:id="@+id/action_recordDetailsFragment_to_recordListFragment"
+            app:destination="@id/recordListFragment" />
     </fragment>
 </navigation>

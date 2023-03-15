@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="note"
+            type="com.example.recordsapp.domain.model.Note" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
