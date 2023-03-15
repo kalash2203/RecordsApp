@@ -14,7 +14,9 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recordsapp.R
@@ -22,6 +24,7 @@ import com.example.recordsapp.databinding.FragmentRecordListBinding
 import com.example.recordsapp.domain.model.Note
 import com.example.recordsapp.presentation.adapter.RecordsListAdapter
 import com.example.recordsapp.presentation.viewmodel.RecordsListViewModel
+import com.example.recordsapp.utils.collectLatestLifeCycleFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -51,11 +54,13 @@ class RecordListFragment : BaseFragment<FragmentRecordListBinding>() {
             )
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.notesList.collectLatest { notesList ->
-                homeAdapter.differ.submitList(notesList)
-            }
+        collectLatestLifeCycleFlow(viewModel.notesList){ notesList ->
+            homeAdapter.differ.submitList(notesList)
         }
+        collectLatestLifeCycleFlow(viewModel.toast){ message ->
+            toast(message)
+        }
+
      }
 
 
@@ -89,14 +94,18 @@ class RecordListFragment : BaseFragment<FragmentRecordListBinding>() {
         addBtn.setOnClickListener {
             val title = noteTitle.text.toString().trim()
             val des = noteDescription.text.toString().trim()
+            if (viewModel.imageUri==null) {
+                toast("Please Select Image")
+                return@setOnClickListener
+            }
             val image: Bitmap = MediaStore.Images.Media.getBitmap(
                 requireActivity().contentResolver,
                 viewModel.imageUri
             )
-            if (title.length < 5) {
+            if (title.length < 3) {
                 noteTitle.error = "too short"
-            } else if (des.length < 100) {
-                noteDescription.error = "Must have more then 100 Characters"
+            } else if (des.length < 15) {
+                noteDescription.error = "Must have more then 15 Characters"
             } else {
                 viewModel.insertNote(
                     Note(
@@ -133,14 +142,10 @@ class RecordListFragment : BaseFragment<FragmentRecordListBinding>() {
 
                 }
                 com.github.dhaval2404.imagepicker.ImagePicker.RESULT_ERROR -> {
-                    Toast.makeText(
-                        requireActivity(),
-                        com.github.dhaval2404.imagepicker.ImagePicker.getError(data),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    toast(com.github.dhaval2404.imagepicker.ImagePicker.getError(data))
                 }
                 else -> {
-                    Toast.makeText(requireActivity(), "Task Cancelled", Toast.LENGTH_SHORT).show()
+                    toast("Task Cancelled")
                 }
             }
         }

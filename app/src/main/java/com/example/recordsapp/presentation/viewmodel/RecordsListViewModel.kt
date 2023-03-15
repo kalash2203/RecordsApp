@@ -9,20 +9,19 @@ import androidx.lifecycle.viewModelScope
 import com.example.recordsapp.domain.model.Note
 import com.example.recordsapp.domain.repository.NoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RecordsListViewModel @Inject constructor(
-    private val noteRepository: NoteRepository,
-    private val app: Application
+    private val noteRepository: NoteRepository
 ) : ViewModel() {
 
     private val _notesList = MutableStateFlow<List<Note>>(emptyList())
     val notesList = _notesList.asStateFlow()
+    private val _toast = MutableSharedFlow<String>()
+    val toast = _toast.asSharedFlow()
 
     var imageUri: Uri? = null
 
@@ -31,15 +30,17 @@ class RecordsListViewModel @Inject constructor(
         getAllNotes()
     }
 
+
     fun insertNote(note: Note) {
         viewModelScope.launch {
             val isNoteInserted = noteRepository.insertNote(note)
 
             if (!isNoteInserted) {
-                Toast.makeText(app, "Something went wrong", Toast.LENGTH_SHORT).show()
+                _toast.emit("Something went wrong")
                 return@launch
             }
-            Toast.makeText(app, "Note is Inserted", Toast.LENGTH_SHORT).show()
+            _toast.emit("Note inserted")
+
         }
     }
 

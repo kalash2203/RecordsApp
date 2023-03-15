@@ -9,17 +9,19 @@ import com.example.recordsapp.presentation.MainActivity
 import com.example.recordsapp.databinding.FragmentRecordDetailsBinding
 import com.example.recordsapp.presentation.viewmodel.DetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 @AndroidEntryPoint
 class RecordDetailsFragment : BaseFragment<FragmentRecordDetailsBinding>() {
+
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentRecordDetailsBinding
             = FragmentRecordDetailsBinding::inflate
     private val args by navArgs<RecordDetailsFragmentArgs>()
 
     private val viewModel: DetailsViewModel by viewModels()
-
-
 
     override fun setup() {
 
