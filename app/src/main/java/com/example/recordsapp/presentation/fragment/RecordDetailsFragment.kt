@@ -16,7 +16,6 @@ import java.util.Calendar
 @AndroidEntryPoint
 class RecordDetailsFragment : BaseFragment<FragmentRecordDetailsBinding>() {
 
-
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentRecordDetailsBinding
             = FragmentRecordDetailsBinding::inflate
     private val args by navArgs<RecordDetailsFragmentArgs>()

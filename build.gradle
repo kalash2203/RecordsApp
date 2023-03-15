@@ -1,7 +1,6 @@
 buildscript {
     repositories {
         mavenCentral()
-        // For ImagePicker library, this line is enough. Although, it has been published on jitpack as well
 
     }
 
