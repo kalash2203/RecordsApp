@@ -15,5 +15,9 @@
     <fragment
         android:id="@+id/recordDetailsFragment"
         android:name="com.example.recordsapp.presentation.fragment.RecordDetailsFragment"
-        android:label="RecordDetailsFragment" />
+        android:label="RecordDetailsFragment" >
+        <argument
+            android:name="note"
+            app:argType="com.example.recordsapp.domain.model.Note" />
+    </fragment>
 </navigation>
